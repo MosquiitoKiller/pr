@@ -14,9 +14,9 @@ public class dogTest {
         String name;
         int age;
         for(int i=0;i<n;++i){
-            System.out.println("name=");
+            System.out.print("name=");
             name=scanner.next();
-            System.out.println("age=");
+            System.out.print("age=");
             age=scanner.nextInt();
             dogs.add(new Dog(name,age));
         }
