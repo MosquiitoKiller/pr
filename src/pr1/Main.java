@@ -19,7 +19,7 @@ public class Main {
         sort(mas);
         for(int q:mas) System.out.print(q+" ");
 
-        System.out.println("\nfact(5)="+fact(5));
+        System.out.println("\n\nfact(5)="+fact(5));
     }
     public static int fact(int a){
         int res=1;
