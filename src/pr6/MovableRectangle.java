@@ -13,29 +13,26 @@ public class MovableRectangle extends Rectangle implements Movable{
         input();
     }
     void input(){
-        System.out.println("x_left=");
+        System.out.print("x_left=");
         left.x=scanner.nextInt();
-        System.out.println("y_left=");
+        System.out.print("y_left=");
         left.y=scanner.nextInt();
-        System.out.println("x_right=");
+        System.out.print("x_right=");
         right.x=scanner.nextInt();
-        System.out.println("y_right=");
+        System.out.print("y_right=");
         right.y=scanner.nextInt();
-        reassign();
+        reassign(left);
+        reassign(right);
     }
-    void reassign(){
-        left.lastx=left.x;
-        left.lasty=left.y;
-        right.lastx=right.x;
-        right.lasty=right.y;
+    void reassign(MovablePoint mp){
+        mp.lastx=mp.x;
+        mp.lasty=mp.y;
     }
     @Override
-    public void move(int x,int y) {
-        reassign();
-        left.x+=x;
-        left.y+=y;
-        right.x+=x;
-        right.y+=y;
+    public void move(int x,int y,MovablePoint mp) {
+        reassign(mp);
+        mp.x+=x;
+        mp.y+=y;
     }
 
     @Override
