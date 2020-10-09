@@ -1,12 +1,18 @@
 package pr7;
 
 public abstract class Furniture {
-    private int weight, height, length;
+    private final int weight, height, length;
     private int price;
     public Furniture(int weight, int height, int length, int price) {
         this.weight = weight;
         this.height = height;
         this.length = length;
+        this.price = price;
+    }
+
+    public abstract String getType();
+
+    public void setPrice(int price) {
         this.price = price;
     }
 

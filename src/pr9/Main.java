@@ -18,7 +18,7 @@ public class Main extends JFrame{
         setSize(500, 450);
         setResizable(false);
         JPanel panel = new JPanel();
-        JButton button = new JButton("PRESS ME");
+        JButton button = new JButton("press me!");
         button.setSize(100, 20);
         panel.add(button);
         ActionListener actionListener = new ActionListener() {

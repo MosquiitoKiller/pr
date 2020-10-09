@@ -9,6 +9,11 @@ public class Main {
         System.out.println("сколько вещей с рандомными характеристиками хотите купить?");
         int c= scanner.nextInt();
         for(int i=0;i<c;++i) FurnitureShop.add(person);
+        System.out.println("Номер товара ");
+        for(int i=0;i<person.basket.size();++i){
+            System.out.println("Номер товара "+(i+1));
+            System.out.println(person.basket.get(i).getType());
+        }
         System.out.println("С вас "+FurnitureShop.get_price(person)+" рублей");
     }
 }

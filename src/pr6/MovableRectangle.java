@@ -24,7 +24,7 @@ public class MovableRectangle extends Rectangle implements Movable{
         reassign(left);
         reassign(right);
     }
-    void reassign(MovablePoint mp){
+    private void reassign(MovablePoint mp){
         mp.lastx=mp.x;
         mp.lasty=mp.y;
     }
@@ -36,7 +36,7 @@ public class MovableRectangle extends Rectangle implements Movable{
     }
 
     @Override
-    public boolean check_speed() {
+    public boolean checkSpeed() {
         return left.x-left.lastx==right.x-right.lastx && left.y-left.lasty==right.y-right.lasty;
     }
 }
