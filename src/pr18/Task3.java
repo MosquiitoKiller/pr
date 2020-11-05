@@ -3,14 +3,13 @@ package pr18;
 import java.util.Scanner;
 
 public class Task3 {
+    private static Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        System.out.println(maxValue());
+    }
+    private static int maxValue(){
         int a=scanner.nextInt();
-        int min=a;
-        while (a!=0){
-            if(a<min) min=a;
-            a=scanner.nextInt();
-        }
-        System.out.println(min);
+        if(a==0) return Integer.MIN_VALUE;
+        else return Math.max(a, maxValue());
     }
 }
