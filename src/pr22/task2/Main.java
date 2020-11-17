@@ -2,6 +2,8 @@ package pr22.task2;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Comparator;
 import java.util.Scanner;
 
@@ -18,6 +20,16 @@ public class Main extends JFrame {
     private JButton linButton = new JButton("Линейный поиск(Id)");
     private JButton back = new JButton("Назад");
     private JButton fioFindButton = new JButton("Поиск по ФИО");
+
+    private JTextArea textN = new JTextArea();
+    private JTextArea textId = new JTextArea();
+    private JTextArea textGPA = new JTextArea();
+    private JTextArea textName = new JTextArea();
+
+    private JButton push = new JButton("Отправить");
+
+    private boolean nIsPushed = false;
+    private int count = 0;
 
     private void outGetters(){
         textArea.setVisible(true);
@@ -39,15 +51,33 @@ public class Main extends JFrame {
 
     public Main(){
         setTitle("Students");
-        textInfo.setText("Что вы хотите сделать?");
         setLayout(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1500,1000);
+        textInfo.setBounds(700,30,300,20);
+        //
+        textInfo.setText("Введите кол-во студентов");
+        textN.setBounds(730,100,170,20);
+
+        textId.setBounds(530,100,150,20);
+        textId.setVisible(false);
+        textGPA.setBounds(730,100,170,20);
+        textGPA.setVisible(false);
+        textName.setBounds(930,100,170,20);
+        textName.setVisible(false);
+
+        push.setBounds(730,150,170,20);
+
+        add(textN);
+        add(textId);
+        add(textGPA);
+        add(textName);
+        add(push);
+
         Rectangle left=new Rectangle(600,100,170,20);
         Rectangle right=new Rectangle(800,100,170,20);
 
         back.setBounds(0,0,100,20);
-        textInfo.setBounds(700,30,300,20);
         textArea.setBounds(650,150,300,300);
         textInput.setBounds(300,150,150,20);
 
@@ -89,6 +119,54 @@ public class Main extends JFrame {
         fioFindButton.setVisible(false);
 
         back.setVisible(false);
+        findButton.setVisible(false);
+        sortButton.setVisible(false);
+
+        push.addActionListener(e->{
+            if (!nIsPushed) {
+                    try {
+                        getters = new Getters[parseId(textN)];
+                        nIsPushed = true;
+                        textN.setVisible(false);
+                        textId.setVisible(true);
+                        textGPA.setVisible(true);
+                        textName.setVisible(true);
+                        textInfo.setText("Вводите тройки(Id,Gpa,name). Студент№"+(count+1));
+                    } catch (UnSerchedException ex) {
+                        JOptionPane.showMessageDialog(null,"Вы попытались ввести значение не того типа\nВНИМАТЕЛЬНЕЙ!!!");
+                        textN.setText("");
+                    }
+                }
+            else {
+                if (textName.getText().length() != 0) {
+                    try {
+
+                        getters[count] = new Student(parseId(textId), parseId(textGPA), textName.getText());
+                        ++count;
+                        textId.setText("");
+                        textGPA.setText("");
+                        textName.setText("");
+                        if(count==getters.length){
+                            textInfo.setText("Что вы хотите сделать?");
+
+                            textId.setVisible(false);
+                            textGPA.setVisible(false);
+                            textName.setVisible(false);
+                            push.setVisible(false);
+
+                            findButton.setVisible(true);
+                            sortButton.setVisible(true);
+                        }
+                        else textInfo.setText("Вводите тройки(Id,Gpa,name). Студент№"+(count+1));
+                    } catch (UnSerchedException ex) {
+                        textId.setText("");
+                        textGPA.setText("");
+                        textName.setText("");
+                        JOptionPane.showMessageDialog(null,"Вы попытались ввести значение не того типа\nВНИМАТЕЛЬНЕЙ!!!");
+                    }
+                }
+            }
+        });
 
         sortButton.addActionListener(e -> {
             textInfo.setText("Каким методом сортировки хотите воспользоваться?");
@@ -144,7 +222,7 @@ public class Main extends JFrame {
 
         binButton.addActionListener(e->{
             try {
-                outFinded(binSearchRec(getters,parseId(),0,getters.length));
+                outFinded(binSearchRec(getters,parseId(textInput),0,getters.length));
             }
             catch (UnSerchedException ex) {
                 outFinded(-1);
@@ -153,7 +231,7 @@ public class Main extends JFrame {
 
         linButton.addActionListener(e->{
             try {
-                outFinded(linearSearch(getters, parseId()));
+                outFinded(linearSearch(getters, parseId(textInput)));
             }
             catch (UnSerchedException ex) {
                 outFinded(-1);
@@ -170,33 +248,18 @@ public class Main extends JFrame {
         });
     }
 
-    private int parseId() throws UnSerchedException {
-        String s=textInput.getText();
-        if(s.length()==0) throw new UnSerchedException("Студент не найден");
+    private int parseId(JTextArea text) throws UnSerchedException {
+        String s=text.getText();
+        if(s.length()==0) throw new UnSerchedException("Это не int");
         int id=0;
         for(int i=0;i<s.length();++i){
             if(s.toCharArray()[i]>='0'&&s.toCharArray()[i]<='9') id=id*10+s.toCharArray()[i]-'0';
-            else if(!(s.toCharArray()[i]==' ' || s.toCharArray()[i]=='\n')) throw new UnSerchedException("Студент не найден");
+            else if(!(s.toCharArray()[i]==' ' || s.toCharArray()[i]=='\n')) throw new UnSerchedException("Это не int");
         }
         return id;
     }
 
     public static void main(String[] args) {
-        Scanner scanner=new Scanner(System.in);
-        System.out.println("Сколько студентов?");
-        int n=scanner.nextInt();
-        getters=new Getters[n];
-        int id;
-        int gpa;
-        String name;
-        for(int i = 0; i< getters.length; ++i){
-            System.out.println("Student #"+(i+1));
-            System.out.print("id = "); id=scanner.nextInt();
-            System.out.print("\ngpa = "); gpa=scanner.nextInt();
-            System.out.print("\nname = "); name=scanner.next();
-            System.out.print('\n');
-            getters[i]= new Student(id,gpa,name);
-        }
         new Main().setVisible(true);
     }
 
