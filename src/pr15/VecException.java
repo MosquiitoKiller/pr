@@ -6,7 +6,7 @@ public class VecException extends Throwable {
         this.mes=s;
     }
 
-    String message(){
+    public String message(){
         return mes;
     }
 }
